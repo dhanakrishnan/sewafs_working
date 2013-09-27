@@ -51,8 +51,8 @@
 <!--=== Purchase Block ===-->
 <div class="row-fluid purchase margin-bottom-10 ">
     <div class="container">
-    <a href="#" class="btn-buy btn-u-blue hover-effect">Need Help? Create your Ticket!!!</a>
-        <a href="#" class="btn-buy btn-u-blue hover-effect">Check your Ticket Status!!</a>
+    <a href="/osticket/open.php" class="btn-buy btn-u-blue hover-effect">Need Help? Create your Ticket!!!</a>
+        <a href="/osticket/view.php" class="btn-buy btn-u-blue hover-effect">Check your Ticket Status!!</a>
     </div>
 </div><!--/row-fluid-->
 <!-- End Purchase Block -->

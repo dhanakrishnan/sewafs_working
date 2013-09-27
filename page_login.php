@@ -34,8 +34,8 @@
                 <button class="btn-u pull-right" type="submit">Login</button>
             </div>
             <hr />
-            <h4>Forget your Password ?</h4>
-            <p>no worries, <a class="color-green" href="#">click here</a> to reset your password.</p>
+          <h4><a class="color-green" href="page_reset_password.php">Forget your Password ?</a></h4>
+            <p>no worries, <a class="color-green" href="page_reset_password.php">click here</a> to reset your password.</p>
 
              <?php 
                 if ($_GET["status"] == "notamember")

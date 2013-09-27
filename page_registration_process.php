@@ -59,6 +59,7 @@ if($result->num_rows == 0){
     //Assign Guest Role to the registered user.
     $userID = getUserID($email);
     //echo $userID;
+    $_SESSION['sewafs_user_userID'] = $userID;
     $roleID = getRoleID("guest");
     //echo $roleID;
 

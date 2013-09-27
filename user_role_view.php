@@ -7,8 +7,11 @@
     $userRole = $_SESSION['sewafs_user_role'];
   $page_title = ucfirst($userRole) ;
   include("page_header.php");
-
   
+  if(isset($_GET["page"]))
+     {
+        echo '<input type="hidden" name="pageli" id="pageli" value="'.$_GET["page"].'">';
+     }
 ?>
 
 
@@ -39,8 +42,10 @@
                             <li><a id="profile_li" class="li-background-color" href="#"><h5>Profile</h5></a></li>
                             <li><a id="change_password_li" class="li-background-color" href="#"><h5>Change Password</h5></a></li>
                             <li><a id="request_history_li" class="li-background-color" href="#"><h5>Request History</h5></a></li>
-                            <li><a id="volunteer_li" class="li-background-color" href="#"><h5>Volunteer Task</h5></a></li>
-                            <li><a id="assign_role_li" class="li-background-color" href="#"><h5>Assign roles</h5></a></li>   
+                            <li><a id="volunteer_li" class="li-background-color" href="#"><h5>List Volunteers</h5></a></li>
+                            <li><a id="assign_role_li" class="li-background-color" href="#"><h5>Assign roles</h5></a></li>  
+                            <li><a id="want_to_become_a_volunteer_li" class="li-background-color" href="page_volunteer_registration.php"><h5>Want to become a Volunteer</h5></a></li> 
+                            <li><a id="tickets" class="li-background-color" href="http://sewafs.org/osticket/scp/staff.php"><h5>Ticket Details</h5></a></li>  
                         </ul>
                     
                 </div><!--/posts-->
@@ -61,10 +66,6 @@
                                     { 
                                       echo '<span class="alert-error"> Please select a valid username and role.</span>';
                                     } 
-                                    if($_GET["page"] == "success")
-                                      {
-                                        echo '<hidden type="text" name="page" id="page" value="Test">';
-                                      }
                                 ?>
                           </div>
 
@@ -274,14 +275,55 @@
                             {
                                 echo '<span class="alert-success"> Your profile information is successfully saved.</span>';
                             }
-                        ?>
-                    </form>
-                </div> <!-- User Profile -->
+                        echo '</form>';
+                echo '</div>';
 
-                <div id="volunteer">
-                    <span><h4>Volunteer profile change - will design it after the volunteer form is done</h4></span>
-                    <span><h4>Volunteer assigned task list</h4></span>
+                echo '<div id="volunteer">';
+
+                    //<!--<span><h4>Volunteer profile change - will design it after the volunteer form is done</h4></span>
+                    //<span><h4>Volunteer assigned task list</h4></span>-->
+
+                    $volunteers = getVolunteers();
+  //var_dump($volunteers);
+
+                    echo '<table  id="datatable" class="table table-bordered display">';
+                    echo '<thead>';
+                        echo '<tr>';
+                            echo '<th>#</th>';
+                            echo '<th>Fullname</th>';
+                            echo '<th>Location</th>';
+                            echo '<th>Phone Number</th>';
+                            echo '<th>Interest</th>';
+                            echo '<th>Available Days</th>';
+                            echo '<th>Available Time</th>';
+                            echo '<th>Emergency Contact No</th>';
+                        echo '</tr>';
+                        echo '</thead>';
+                           
+                        echo '<tbody>';
+                        $no = 0;
+                            if(!is_null($volunteers))
+                            {
+                            foreach ($volunteers as $volunteer) {
+                                //var_dump($volunteer);
+                                echo '<tr>';
+                                echo '<td>' . ++$no . '</td>';
+                                echo '<td>' . $volunteer['fullName'] . '</td>';
+                                echo '<td>' . $volunteer['location'] . '</td>';
+                                echo '<td>' . $volunteer['phoneNumber'] . '</td>';
+                                echo '<td>' . $volunteer['volunteerInterest'] . '</td>';
+                                echo '<td>' . $volunteer['availableDays'] . '</td>';
+                                echo '<td>' . $volunteer['availableTime'] . '</td>';
+                                echo '<td>' . $volunteer['contactNumber'] . '</td>';
+                                # code...
+                                echo '</tr>';
+                            }
+  }
+                            echo '</tbody>';
+                        
+                    echo '</table>';
                     
+                    ?>
 
                 </div>
 
@@ -298,8 +340,16 @@ include("page_footer.php");
 include("copyright.php");
 include("js.php");
 ?>
+  <script type="text/javascript" language="javascript" src="assets/plugins/datatable/media/js/jquery.js"></script>
+<script type="text/javascript" language="javascript" src="assets/plugins/datatable/media/js/jquery.dataTables.js"></script>
 <script type="text/javascript" src="assets/js/validation/validate.js"></script>
 <script type="text/javascript">
+      $(document).ready(function() {
+                $('#datatable').dataTable({
+                     "sPaginationType": "full_numbers",
+                    "bJQueryUI":true
+                 });
+            } );
     
       //Zipcode validation
       $("#zipcode").keyup(function(){
@@ -405,8 +455,24 @@ include("js.php");
 <script type="text/javascript">
     $(document).ready(function(){
         var role = $("#activeUser").text().trim();
-        var page = $("#page").val();
-        alert(page);
+        
+        var page = $("#pageli").val();
+        if(page == "password")
+        {
+            $("#assign_role").hide();
+            $("#volunteer").hide();
+            $("#request_history").hide();
+            $("#profile").hide();
+            $("#change_password").show();
+        }
+        else if(page == "roleAssignment")
+        {
+            $("#change_password").hide();
+            $("#request_history").hide();
+            $("#profile").hide();
+            $("#volunteer").hide();
+            $("#assign_role").show();
+        }
         //var roleStr = testRole.toString();
         //alert(roleStr);
         //var role='Guest';
@@ -432,6 +498,8 @@ include("js.php");
                 $("#volunteer_li").hide();
                 $("#profile_li").show();
                 $("#change_password_li").show();
+                $("#want_to_become_a_volunteer_li").show();
+                $("#tickets").hide();
                 break;
             case 'Family':
                 $("#request_history_li").show();
@@ -439,6 +507,8 @@ include("js.php");
                 $("#volunteer_li").hide();
                 $("#profile_li").show();
                 $("#change_password_li").show();
+                $("#want_to_become_a_volunteer_li").show();
+                $("#tickets").hide();
                 break;
             case 'Volunteer':
                 $("#request_history_li").hide();
@@ -446,6 +516,8 @@ include("js.php");
                 $("#volunteer_li").show();
                 $("#profile_li").show();
                 $("#change_password_li").show();
+                $("#want_to_become_a_volunteer_li").hide();
+                $("#tickets").hide();
                 break;
             case 'Admin':
                 $("#request_history_li").show();
@@ -453,11 +525,12 @@ include("js.php");
                 $("#volunteer_li").show();
                 $("#profile_li").show();
                 $("#change_password_li").show();
+                $("#want_to_become_a_volunteer_li").hide();
+                $("#tickets").show();
                 break;
 
         }
         
-
 
     });
 </script>

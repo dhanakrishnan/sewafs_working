@@ -34,12 +34,14 @@ function getUserID($emailID)
       return $row['userID'];
     }
   }
+  else
+    return NULL;
   /*else
   {
     echo "Database erro : can't get the userID";
     exit;
   }*/
-  closeConnection($dbConnect);
+  
 }
 
 function getRoleID($roleName)
@@ -152,6 +154,40 @@ function getEmergencyContactID($contactNumber)
       return "NULL";
     }
 }
+
+function getVolunteerProfileQuery($userID)
+{
+  return "SELECT *
+      FROM Volunteer_Profile VP
+      JOIN Emergency_Contact EC ON VP.emergencyContactID1 = EC.emergencyContactID
+      JOIN Emergency_Contact_Relationship ECR ON VP.emergencyContactID1 = ECR.emergencyContactID
+      WHERE VP.userID ='$userID'";
+}
+
+function getEmergencyContact2Query($userID, $emergencyContactID)
+{
+  return "SELECT EM.contactName, EM.contactNumber, ECR.relationship
+FROM Emergency_Contact_Relationship ECR
+JOIN Emergency_Contact EM ON EM.emergencyContactID = ECR.emergencyContactID
+WHERE ECR.userID ='$userID'
+AND EM.emergencyContactID <>'$emergencyContactID'";
+}
+  
+function getVolunteersQuery()
+{
+  return "SELECT *
+          FROM User U
+          LEFT JOIN User_Profile UR ON U.userID = UR.userID
+          LEFT JOIN Volunteer_Profile VP ON U.userID = VP.userID
+          LEFT JOIN Emergency_Contact EC ON VP.emergencyContactID1 = EC.emergencyContactID
+          WHERE U.userID
+          IN (
+
+          SELECT userID
+          FROM User_Role UR
+          JOIN Role R ON R.roleID = UR.roleID
+          WHERE R.roleName = 'volunteer')";
+}
 ///////////////////////////////////          INSERT QUERIES          /////////////////////////////////////////////////
 
 function insertUserRole($userID, $roleID)
@@ -236,24 +272,39 @@ function insertUsertProfileQuery($userID, $firstName, $lastName, $address1, $add
 
 function getInsertVolunteerUserProfileQuery($userID, $firstName, $lastName, $phoneNo)
 { 
-  $query = "INSERT INTO User_Profile (`userID`,`firstName`, `lastName`, `phoneNumber`) VALUES ('$userID'," . " $firstName, $lastName, $phoneNo)";
+  $query = "INSERT INTO User_Profile (`userID`,`firstName`, `lastName`, `phoneNumber`) 
+            VALUES ('$userID'," . " $firstName, $lastName, $phoneNo) ON DUPLICATE KEY
+            UPDATE firstName=$firstName, lastName=$lastName, phoneNumber=$phoneNo";
   return $query;
 }
 
 function getInsertVolunteerProfileQuery($userID, $location, $interestStr, $daysAvailableStr, 
-                                    $timeAvailableStr, $otherTime, $age, $languageStr, 
+                                    $timeAvailableStr, $otherTime, $age, $gender, $languageStr, 
                                     $skills, $previousExp, $hearAboutUsThroughStr, $comments,
                                     $emergencyContactID, $emergencyContactID2)
 {
   return "INSERT INTO Volunteer_Profile (`userID`,`location`,`volunteerInterest`,`availableDays`,`availableTime`,`otherAvailability`,
-                                         `ageGroup`,`languageSpoken`,`skills`,`previousExperience`,`hearAboutUsThrough`,`otherComments`,
+                                         `ageGroup`,`gender`,`languageSpoken`,`skills`,`previousExperience`,`hearAboutUsThrough`,`otherComments`,
                                          `emergencyContactID1`,`emergencyContactID2`) 
           VALUES ('$userID', $location, $interestStr, $daysAvailableStr, 
-                                    $timeAvailableStr, $otherTime, $age, $languageStr, 
+                                    $timeAvailableStr, $otherTime, $age, $gender, $languageStr, 
                                     $skills, $previousExp, $hearAboutUsThroughStr, $comments,
                                     $emergencyContactID, $emergencyContactID2)";
 }
 
+function getUpdateVolunteerProfileQuery($userID, $location, $interestStr, $daysAvailableStr, 
+                                      $timeAvailableStr, $otherTime, $age, $gender, $languageStr, 
+                                      $skills, $previousExp, $hearAboutUsThroughStr, $comments,
+                                      $emergencyContactID, $emergencyContactID2)
+{
+  $query = "UPDATE Volunteer_Profile SET location = $location, volunteerInterest = $interestStr, availableDays=$daysAvailableStr,
+                                          availableTime=$timeAvailableStr, otherAvailability=$otherTime, ageGroup=$age,
+                                          gender=$gender, languageSpoken=$languageStr, skills=$skills, previousExperience=$previousExp,
+                                          hearAboutUsThrough=$hearAboutUsThroughStr, otherComments=$comments, emergencyContactID1=$emergencyContactID,
+                                          emergencyContactID2=$emergencyContactID2
+           WHERE userID=$userID";
+  return $query;
+}
 function getEmergencyContactInsertQuery($emergencyContactName1, $emergencyContactNo1)
 {
     return "INSERT INTO Emergency_Contact (`contactName`,`contactNumber`) VALUES ($emergencyContactName1, $emergencyContactNo1)";
@@ -268,6 +319,9 @@ function getUpdatePasswordQuery($userID, $hashedPassword)
 {
   return "UPDATE User SET password='$hashedPassword' where userID = '$userID'";
 }
-
+function getUpdatePasswordQueryByEmailID($emailID, $hashedPassword)
+{
+  return "Update User SET password='$hashedPassword' WHERE emailID='$emailID'";
+}
 
 ?>

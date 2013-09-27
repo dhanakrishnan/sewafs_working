@@ -39,6 +39,12 @@ require_once("include/session.php");
   
     <!-----Video pop up ---->
     <link rel="stylesheet" href="assets/css/prettyphoto/prettyPhoto.css" type="text/css" media="screen" charset="utf-8" />
+  
+    <!-- Jquery Datatable -->
+    <style type="text/css" title="currentStyle">
+            @import "assets/plugins/datatable/media/css/demo_table_jui.css";
+            @import "assets/plugins/datatable/media/themes/smoothness/jquery-ui-1.8.4.custom.css";
+    </style>
 
 </head> 
 
@@ -62,11 +68,17 @@ require_once("include/session.php");
                     <a href="index.php"><img id="logo-header" src="assets/img/logo_sewafs.png" width="85%" alt="Logo" ></a>
                 </div><!-- /logo -->        
                 <ul class="loginbar pull-right">
-                     <?php  
-                        $href = "page_".$_SESSION['role'].".php"; 
-                        if($_SESSION['userName'] != "" || !is_null($_SESSION['userName']))
+                      <?php  
+                        $href = "user_role_view.php";
+                        //if(isset($_SESSION["role"]) && $_SESSION["role"] == "member"){
+                        $userName = "";
+                        if(isset($_SESSION['sewafs_user_userName']))
+                            $userName = $_SESSION['sewafs_user_userName'];
+
+                        //echo $href;
+                        if($userName != "")
                         {
-                            echo '<li><a href="user_role_view.php" class="login-btn">' . $_SESSION['userName'] . '</a></li>';
+                            echo '<li><a href="' .$href. '" class="login-btn">' . $userName . '</a></li>';
                             echo '<li class="devider">&nbsp;</li>';
                             echo '<li><a href="page_logout.php" class="login-btn">Logout</a></li>';
                             echo '';
@@ -123,7 +135,7 @@ require_once("include/session.php");
                                         <b class="caret"></b>                            
                                     </a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="#">Volunteer</a></li>
+                                        <li><a href="page_volunteer_registration.php">Volunteer</a></li>
                                         <li><a href="#">Service Provider</a></li>
                                         <li><a href="#">Donate</a></li>
 
@@ -165,10 +177,12 @@ require_once("include/session.php");
                             </ul>
                             <div class="search-open">
                                 <div class="input-append">
-                                    <form>
-                                        <input type="text" class="span3" placeholder="Search" />
+                                    <!-- Search box form -->
+                                    <form method="get" action="search-results.php">                    
+                                        <input type="text" name="q" size="25" autocomplete="off" class="span3" placeholder="Search" />
                                         <button type="submit" class="btn-u">Go</button>
                                     </form>
+                  <!-- End of search box form -->
                                 </div>
                             </div>
                         </div><!-- /nav-collapse -->                                

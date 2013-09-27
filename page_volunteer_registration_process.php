@@ -4,10 +4,15 @@
   require_once("include/queries.php");
   require_once("include/db_connection_close.php");
   require_once("include/sewafs_functions.php");
+  require_once("include/session.php");
 
   //echo sizeof($_POST['field']);
   if($_SERVER["REQUEST_METHOD"] == "POST")
   {
+    $volunteer = trim($_POST['volunteer']);
+    //echo $volunteer;
+    //exit;
+
     $firstName = trim($_POST['firstName']);
     $firstName = !empty($firstName) ? "'" . $firstName."'": "NULL";
     //echo($firstName);
@@ -56,6 +61,7 @@
     $otherTime = $_POST['otherTime'];
     $otherTime = !empty($otherTime) ? "'" . $otherTime."'": "NULL";
 
+    $newUserName = trim($_POST['userName']);
     $userName = trim($_POST['userName']);
     $userName = !empty($userName) ? "'" . $userName."'": "NULL";
     //var_dump($userName);
@@ -144,6 +150,7 @@
     //var_dump($emergencyContactRelation2);
 
 
+
     /*------------ Server Side validation  ------------
       1.  Required Field Validation - (firstName, LastName, emailID, location, emergencyContactName1, emergencyContactNo1, emergencyContactRel1)
       2.  Email Validation
@@ -191,20 +198,35 @@
         2. Generate a temporary password and mail it to the user.
         3. Get query string
         4. execute the query
-        5. get the userID - put it in session variable
-      */
-
+        5. get the userID 
+    */
       include ("include/db_connection.php");
 
 
-      //Temporary password generation
-      $passwordLength = 6;
-      $password = generateTemporaryPassword($passwordLength);
-      $hashedPassword = "'" . sha1($password). "'";
+    $userID = "";
+      if(isset($_SESSION['sewafs_user_userID']))
+        $userID = $_SESSION['sewafs_user_userID'];
 
-      $insertUserQuery = insertVolunteerUserQuery($userName, $emailID, $hashedPassword);
-      mysqli_query($dbConnect, $insertUserQuery);
+      //When current user wants to become a volunteer, we dont have to generate a temporary password
+      if($_SESSION['sewafs_user_userID'] == "" || is_null($_SESSION['sewafs_user_userID']) || !isset($_SESSION['sewafs_user_userID']))
+      {
+        //Temporary password generation
+        $passwordLength = 6;
+        $password = generateTemporaryPassword($passwordLength);
+        $hashedPassword = "'" . sha1($password). "'";
 
+        $insertUserQuery = insertVolunteerUserQuery($userName, $emailID, $hashedPassword);
+        //echo $insertUserQuery;
+        mysqli_query($dbConnect, $insertUserQuery);
+      }
+      else if($_SESSION['sewafs_user_userName'] != $newUserName && $newUserName != "")
+      {
+        $updateUserNameQuery = updateUserNameQuery($newUserName, $_SESSION['sewafs_user_userID']);
+        //echo $updateUserNameQuery;
+        mysqli_query($dbConnect, $updateUserNameQuery);
+      }
+
+      
       //echo "UserTable is inserted";
       //echo $password;
       //echo $insertUserQuery;
@@ -218,9 +240,13 @@
       else
         $_SESSION['sewafs_user_userName'] = $firstName . " " . $lastName;*/
 
-      //Assign Guest Role to the registered user.
-      $userID = getUserID($emailAddress);
+      if(isset($_SESSION['sewafs_user_userID']))
+        $userID = $_SESSION['sewafs_user_userID'];
+      else
+        $userID = getUserID($emailAddress);
+      
       //echo $userID;
+      //exit;
       $roleID = getRoleID("volunteer");
       //echo $roleID;
 
@@ -233,8 +259,11 @@
          1. get query string
          2. execute the query*/
 
+
+
       $insertVolunteerUserProfileQuery = getInsertVolunteerUserProfileQuery($userID, $firstName, $lastName, $phoneNo);
-      //echo $insertVolunteerUserQuery;
+      //echo $insertVolunteerUserProfileQuery;
+
       mysqli_query($dbConnect, $insertVolunteerUserProfileQuery);
 
       //$userProfileID = getUserProfileID($userID);
@@ -268,27 +297,36 @@
     }
 
     //INsert into Volunteer Table
+    if($volunteer == "false")
+    {
+      $insertVolunteerProfileQuery = getInsertVolunteerProfileQuery($userID, $location, $interestStr, $daysAvailableStr, 
+                                      $timeAvailableStr, $otherTime, $age, $gender, $languageStr, 
+                                      $skills, $previousExp, $hearAboutUsThroughStr, $comments,
+                                      $emergencyContactID, $emergencyContactID2);
 
-    $insertVolunteerProfileQuery = getInsertVolunteerProfileQuery($userID, $location, $interestStr, $daysAvailableStr, 
-                                    $timeAvailableStr, $otherTime, $age, $languageStr, 
-                                    $skills, $previousExp, $hearAboutUsThroughStr, $comments,
-                                    $emergencyContactID, $emergencyContactID2);
-
-    //echo $insertVolunteerProfileQuery;
-    mysqli_query($dbConnect, $insertVolunteerProfileQuery);
-
-      //////////You have to make it work - send email at the end
-      /*$email_body = "Your Temporary Password : ". $password;
-      $email_body = $email_body  . "<br> Please login to sewafs.org using your emailID and password.";
-      $email_body = $email_body . "<br> Thank You.";*/
-
-      $email_body = "Your Temporary Password : ". $password;
-    send_emailto_the_volunteer(trim($_POST['emailID']), $email_body);
-
-    header("Location:page_volunteer_registration.php?status=success");
+      //echo $insertVolunteerProfileQuery;
+      mysqli_query($dbConnect, $insertVolunteerProfileQuery);
 
 
+      if($_SESSION['sewafs_user_userID'] != "" || !is_null($_SESSION['sewafs_user_userID']))
+      {
+        $_SESSION['sewafs_user_role'] = "volunteer";
+        header("Location:page_volunteer_registration.php?status=becomeVolunteer");
+      }
+      else
+      {
+          //////////You have to make it work - send email at the end
+          /*$email_body = "Your Temporary Password : ". $password;
+          $email_body = $email_body  . "<br> Please login to sewafs.org using your emailID and password.";
+          $email_body = $email_body . "<br> Thank You.";*/
 
+          $email_body = "Your Temporary Password : ". $password;
+        send_emailto_the_volunteer(trim($_POST['emailID']), $email_body);
+
+        header("Location:page_volunteer_registration.php?status=success");
+      }
+
+    }  
     /*------------ Update the tables when user is already registered ------------
       1.  User - userName and emaildID
       2.  User_Profile - firstName, LastName, Phone Number
@@ -296,6 +334,18 @@
       4.  User_Role (userID and roleID) - find the roleID for volunteer role before inserting.
       5.  Volunteer_Profile Table - update it when user is already a volunteer
     */
+      else
+      {
+        $updateVolunteerProfileQuery = getUpdateVolunteerProfileQuery($userID, $location, $interestStr, $daysAvailableStr, 
+                                      $timeAvailableStr, $otherTime, $age, $gender, $languageStr, 
+                                      $skills, $previousExp, $hearAboutUsThroughStr, $comments,
+                                      $emergencyContactID, $emergencyContactID2);
+        mysqli_query($dbConnect, $updateVolunteerProfileQuery);
+        $_SESSION['sewafs_user_userName'] = $newUserName;
+        //echo $updateVolunteerProfileQuery;
+        header("Location:page_volunteer_registration.php?status=updated");
+
+      }
 
 
   }
