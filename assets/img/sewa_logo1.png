@@ -1,0 +1,114 @@
+
+[Layout_NUp]
+Rows=1
+Columns=1
+HGutter=0
+VGutter=0
+LeftMargin=-1
+RightMargin=-1
+TopMargin=-1
+BottomMargin=-1
+CellWidth=281
+CellHeight=794
+AbsoluteMode=0
+
+[Layout_Single]
+LeftMargin=10
+RightMargin=10
+TopMargin=10
+BottomMargin=10
+
+[Layout_Poster]
+LeftMargin=0
+RightMargin=0
+TopMargin=0
+BottomMargin=0
+HorizontalOverlap=8
+VerticalOverlap=8
+PosterWidth=1000
+PosterHeight=1000
+
+[Layout_Carousel]
+LeftMargin=0
+RightMargin=0
+TopMargin=0
+BottomMargin=0
+InnerRadius=0
+Segments=4
+Overlap=30
+AngleOffset=0
+
+[Layout]
+LayoutType=NUp
+AllowCropping=0
+Rotation=2
+
+[Output]
+Queue=Deskjet_D1600
+Driver=ps2
+# Command=
+# ResponseHash=
+
+[Print]
+PPDFile=<Default Queue PPD>
+PageSize=Custom
+PrintingMode=Color
+ColorCorrection=None
+ChannelBitDepth=8
+InputImageType=Grayscale
+LinearContrast=0
+DitherAlgorithm=None
+ImageType=TextGraphics
+JobMode=Page
+CustomWidth=279
+CustomHeight=792
+
+[ColourManagement]
+DefaultRGBProfile=<Built-in sRGB profile>
+DefaultRGBProfileActive=1
+DefaultCMYKProfile=USWebCoatedSWOP.icc
+DefaultCMYKProfileActive=0
+# DefaultGreyProfile=
+DefaultGreyProfileActive=0
+# PrinterProfile=
+PrinterProfileActive=0
+# ExportProfile=
+ExportProfileActive=0
+MonitorProfile=<System monitor profile>
+MonitorProfileActive=1
+RenderingIntent=0
+ProofMode=0
+ProfilePath=/usr/share/color/icc:/usr/local/share/color/icc/:$HOME/.color/icc
+
+[General]
+PresetVersion=41
+PrintColourSpace=RGB
+ScalingQuality=0
+Units=MM
+RenderingResolution=360
+Win_X=0
+Win_Y=0
+Win_W=516
+Win_H=365
+HighresPreviews=1
+ExpanderState_SigControl=0
+ExpanderState_Carousel=1
+ExpanderState_Single=1
+ExpanderState_Poster=1
+ExpanderState_PosterOverlap=1
+ExpanderState_PageExtent=1
+ExpanderState_ImageInfo=0
+ExpanderState_Histogram=1
+ExpanderState_EffectSelector=1
+# DefaultRGBProfile=
+DefaultRGBProfileActive=0
+# DefaultCMYKProfile=
+DefaultCMYKProfileActive=0
+# PrinterProfile=
+PrinterProfileActive=0
+# MonitorProfile=
+MonitorProfileActive=0
+RenderingIntent=0
+BorderPath=/usr/share/photoprint/borders:/usr/local/share/photoprint/borders:$HOME/.photoprint/borders
+BackgroundPath=/usr/share/photoprint/backgrounds:/usr/local/share/photoprint/backgrounds:$HOME/.photoprint/backgrounds
+ShortcutsPath=/usr/share/photoprint/shortcuts:/usr/local/share/photoprint/shortcuts:$HOME/.photoprint/shortcuts

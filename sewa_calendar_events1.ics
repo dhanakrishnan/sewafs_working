@@ -1,0 +1,86 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//www.marudot.com//iCal Event Maker
+X-WR-CALNAME:BayArea CRY Walk 2013
+X-WR-TIMEZONE:America/Los_Angeles
+BEGIN:VEVENT
+DTSTAMP:20130915T180622Z
+UID:20130915T180622Z-2068671244@marudot.com
+DTSTART;TZID=America/Los_Angeles:20130915T143000
+DTEND;TZID=America/Los_Angeles:20130915T190000
+SUMMARY:Education Seminar: Help your children identify their passions and choose majors that will pave the path to success.
+DESCRIPTION:Hosted By:\nThinkTank Learning\nPhone: 415-668-6686
+LOCATION:SFSU (JAH Jack Adams Hall)\, 1650 Holloway Ave\, San Francisco\, CA 94132
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20130915T180622Z
+UID:20130915T180622Z-634097941@marudot.com
+DTSTART;TZID=America/Los_Angeles:20130918T190000
+DTEND;TZID=America/Los_Angeles:20130918T220000
+SUMMARY:The Art of Living Happiness Program
+DESCRIPTION:Register at http://secure.artofliving.org/course_details.aspx?course_id=15295\n\nHosted by:\nThe Art of Living\nPhone: 408-483-5691\n
+LOCATION: Art of Living North San Jose Center\, 43 E Gish Rd\, San Jose\, CA 95112
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20130915T180622Z
+UID:20130915T180622Z-1400373064@marudot.com
+DTSTART;TZID=America/Los_Angeles:20131004T193000
+DTEND;TZID=America/Los_Angeles:20131004T230000
+SUMMARY:SEF Dandia 2013
+DESCRIPTION:Buy tickets Online @\nhttp://www.giftofvision.org/sef-dandia-2013-sf-bay-area
+LOCATION:Santa Clara Convention Center\, 5001 Great America Pkwy\, Santa Clara\, CA 95054
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20130915T180622Z
+UID:20130915T180622Z-859248538@marudot.com
+DTSTART;TZID=America/Los_Angeles:20131005T193000
+DTEND;TZID=America/Los_Angeles:20131005T230000
+SUMMARY:SEF Dandia 2013
+DESCRIPTION:http://www.giftofvision.org/sef-dandia-2013-sf-bay-area
+LOCATION:Santa Clara Convention Center\, 5001 Great America Pkwy\, Santa Clara\, CA 95054
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20130915T180622Z
+UID:20130915T180622Z-269260342@marudot.com
+DTSTART;TZID=America/Los_Angeles:20131011T170000
+DTEND;TZID=America/Los_Angeles:20131013T200000
+SUMMARY:Yoga and Meditation - A Life-Transforming Weekend
+DESCRIPTION:Inner Engineering with Sadhguru Vasudev October 11 - 13\, 2013\n\nProgram Details:\n\nFriday 10/11/2013 – 5:00pm to 9:00pm\n\nSaturday 10/12/2013 – 8:30am to 7:00pm\n\nSunday 10/13/2013 – 7:30am to 8:00pm
+LOCATION:San Mateo County Event Center\, 2495 S Delaware St\, San Mateo\, CA 94403
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20130915T180622Z
+UID:20130915T180622Z-1000959333@marudot.com
+DTSTART;TZID=America/Los_Angeles:20131011T193000
+DTEND;TZID=America/Los_Angeles:20131011T230000
+SUMMARY:SEF Dandia 2013
+DESCRIPTION:http://www.giftofvision.org/sef-dandia-2013-sf-bay-area
+LOCATION:Santa Clara Convention Center\, 5001 Great America Pkwy\, Santa Clara\, CA 95054
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20130915T180622Z
+UID:20130915T180622Z-594690585@marudot.com
+DTSTART;TZID=America/Los_Angeles:20131012T193000
+DTEND;TZID=America/Los_Angeles:20131012T230000
+SUMMARY:SEF Dandia 2013
+DESCRIPTION:http://www.giftofvision.org/sef-dandia-2013-sf-bay-area
+LOCATION:Santa Clara Convention Center\, 5001 Great America Pkwy\, Santa Clara\, CA 95054
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20130915T180622Z
+UID:20130915T180622Z-1870638427@marudot.com
+DTSTART;TZID=America/Los_Angeles:20131117T110000
+DTEND;TZID=America/Los_Angeles:20131117T180000
+SUMMARY:Bay Area Childer's Day
+LOCATION:Community Hall\, 420 Persian Dr\, Sunnyvale\, CA 94089
+END:VEVENT
+BEGIN:VEVENT
+DTSTAMP:20130915T180622Z
+UID:20130915T180622Z-2004698205@marudot.com
+DTSTART;TZID=America/Los_Angeles:20131120T090000
+DTEND;TZID=America/Los_Angeles:20131124T200000
+SUMMARY: The Truth Revealed Retreat 
+DESCRIPTION:November 20 - November 24\, 2013\, Wednesday morning through Sunday afternoon\n\nPhone: 	831-425-7287 
+LOCATION: 	Society of Abidance in Truth 1834 Ocean St Santa Cruz\, CA 95060
+END:VEVENT
+END:VCALENDAR
